@@ -1,1 +1,0 @@
-const user = ({"name":"Motunrayo Sholola","age":"40","sex":"Female"});
