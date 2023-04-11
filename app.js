@@ -1,51 +1,37 @@
-const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('/routes/users');
+const bodyParser = require('body-parser');
 
 const app = express();
 const port = 4000
 
-
-//view egine setup
-app.set('views', path.join(__dirname,'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-
-//User object request
-app.get('/user/:name/ :age/ :sex', (request, response) => {
-    res.json({name: request.params.name, age: request.params.age, sex: request.params.sex});
+app.get('/', (req, res) => {
+    return res.send('I LOVE SOFTWARE PROGRAMMING');
 });
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-//catch 404 message
-app.use(function (error, request, next) {
-    next(createError(404));
+app.get('/home', (req, res) => {
+    return res.send('The Server is Running');
 });
 
-//Error handler
-app.use(function (error, request, response, next) {
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err: {};
+const user = [{
+    name: 'Motunrayo',
+    sex: 'Female',
+    age: '40',
+}]
 
-//Error page
-res.status(err.status || 500);
-res.render('error');
+app.get('/user', function(req, res) {
+    res.json(user)
 });
+
+
+app.get('/ :id/user', (req, res) => {
+    console.log(req.query)
+    res.send('Hello World')
+})
 
 module.exports = app;
 
